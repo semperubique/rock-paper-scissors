@@ -1,14 +1,22 @@
+const possibleChoices = ['rock', 'paper', 'scissors'];
+const buttons = document.querySelectorAll('button');
+const container = document.querySelector('.container');
+const result_info = document.createElement('div');
+const round_info = document.createElement('div');
+const final_info = document.createElement('div');
+
+let userScore = 0;
+let computerScore = 0;
+const rounds = 5;
+
 function getComputerChoice(possibleChoices) {
     let randomChoice = possibleChoices[Math.floor(Math.random()*possibleChoices.length)];
     return randomChoice.toLowerCase();
 }
 
-function getUserChoice(possibleChoices) {
-    let userChoice = prompt(`Please choose your warrior among ${possibleChoices.join(', ')}`);
-    return userChoice.toLowerCase();
-}
+function playRound(userChoice, possibleChoices) {
+    let computerChoice = getComputerChoice(possibleChoices);
 
-function playRound(computerChoice, userChoice, possibleChoices) {
     let userChoiceIndex = possibleChoices.indexOf(userChoice);
     let computerChoiceIndex = possibleChoices.indexOf(computerChoice);
 
@@ -23,40 +31,37 @@ function playRound(computerChoice, userChoice, possibleChoices) {
     }
 }
 
-function game(possibleChoices) {
-    let userScore = 0;
-    let computerScore = 0;
+function playGame(possibleChoices) {
+    let i = 1;
+    buttons.forEach(button => button.addEventListener('click', function () {
+            if(i>5) { return;}
+            round_info.textContent = `Round: ${i}/${rounds}`;
+            result_info.textContent = playRound(button.id, possibleChoices);
+            container.appendChild(result_info);
+            container.appendChild(round_info);    
 
-    for (let i = 0; i < 5; i++) {
-        let computerChoice = getComputerChoice(possibleChoices);
-        let userChoice = getUserChoice(possibleChoices);
+            if (result_info.textContent.slice(0,5) === "You w") {
+                userScore+=1;
+            }
+            else if (result_info.textContent.slice(0,5) === "You l") {
+                computerScore+=1;
+            }
 
-        let result = playRound(computerChoice, userChoice, possibleChoices);
+            i++;
 
-        console.log(`Round ${i+1}/5`)
-        console.log(result);
-        
-        if (result.slice(0,5) === "You w") {
-            userScore+=1;
-        }
-        else if (result.slice(0,5) === "You l") {
-            computerScore+=1;
-        }
-    }
-
-    if (userScore > computerScore) {
-        console.log("Winner is you!");
-    }
-    else if (userScore < computerScore) {
-        console.log("Winner is computer!");
-    }
-    else {
-        console.log("Impossible!");
-    }
-
-
+            if (userScore > computerScore) {
+                final_info.textContent = "Winner is you!";
+            }
+            else if (userScore < computerScore) {
+                final_info.textContent = "Winner is computer!";
+            }
+            else {
+                final_info.textContent = "Draw";
+            }
+            container.appendChild(final_info);
+            }));
 }
 
-const possibleChoices = ['rock', 'paper', 'scissors'];
 
-game(possibleChoices);
+
+playGame(possibleChoices);
