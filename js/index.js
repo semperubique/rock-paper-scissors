@@ -15,11 +15,24 @@ const userLivesInfo = document.querySelector('#user-lives');
 const computerLivesInfo = document.querySelector('#computer-lives');
 const battleResult = document.querySelector('.battle-result');
 const warResult = document.querySelector('.war-result');
+const computerChoiceInfo = document.querySelector('.computer-section');
 
 const optionRestart = document.createElement('button');
 
 function getComputerChoice(possibleChoices) {
     let randomChoice = possibleChoices[Math.floor(Math.random()*possibleChoices.length)];
+    let computerChoiceInfoImage = document.querySelector('#computer-choice-image')
+
+    if (randomChoice === 'rock') {
+        computerChoiceInfoImage.src = './images/paladin.png';
+    }
+    else if (randomChoice === 'paper') {
+        computerChoiceInfoImage.src = './images/elf.png';
+    }
+    else { 
+        computerChoiceInfoImage.src = './images/wizard.png';
+    }
+//    computerChoiceInfo.appendChild(computerChoiceInfoImage);
     return randomChoice.toLowerCase();
 }
 
